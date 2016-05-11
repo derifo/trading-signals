@@ -1,0 +1,8 @@
+app:
+    resource: "@System/Controller/"
+    type:     annotation
+
+traders:
+    resource: "@Traders/Controller/"
+    type:     annotation
+    prefix: /api/traders

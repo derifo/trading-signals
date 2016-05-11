@@ -1,0 +1,89 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Signals
+ *
+ * @ORM\Table(name="signals", indexes={@ORM\Index(name="asset_id", columns={"asset_id"})})
+ * @ORM\Entity
+ */
+class Signals
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="asset_id", type="integer", nullable=false)
+     */
+    private $assetId;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="direction", type="boolean", nullable=false)
+     */
+    private $direction = '0';
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="creation_rate", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $creationRate;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="min_entry_rate", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $minEntryRate;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="max_entry_rate", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $maxEntryRate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="max_expires", type="datetime", nullable=false)
+     */
+    private $maxExpires;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="expires_flex_before", type="integer", nullable=false)
+     */
+    private $expiresFlexBefore = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="expires_flex_after", type="integer", nullable=false)
+     */
+    private $expiresFlexAfter = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="active", type="integer", nullable=false)
+     */
+    private $active = '1';
+
+
+}
+

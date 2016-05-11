@@ -1,0 +1,81 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Merchants
+ *
+ * @ORM\Table(name="merchants", indexes={@ORM\Index(name="patner_id", columns={"patner_id"}), @ORM\Index(name="adapter_id", columns={"integration_id"})})
+ * @ORM\Entity
+ */
+class Merchants
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=150, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=50, nullable=false)
+     */
+    private $tag;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_param1", type="string", length=200, nullable=true)
+     */
+    private $apiParam1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_param2", type="string", length=200, nullable=true)
+     */
+    private $apiParam2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_param3", type="string", length=200, nullable=true)
+     */
+    private $apiParam3;
+
+    /**
+     * @var \Partners
+     *
+     * @ORM\ManyToOne(targetEntity="Partners")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="patner_id", referencedColumnName="id")
+     * })
+     */
+    private $patner;
+
+    /**
+     * @var \Intergrations
+     *
+     * @ORM\ManyToOne(targetEntity="Intergrations")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="integration_id", referencedColumnName="id")
+     * })
+     */
+    private $integration;
+
+
+}
+

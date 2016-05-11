@@ -1,0 +1,57 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MerchantsSignals
+ *
+ * @ORM\Table(name="merchants_signals", indexes={@ORM\Index(name="merchant_id", columns={"merchant_id"}), @ORM\Index(name="merchant_id_2", columns={"merchant_id"}), @ORM\Index(name="merchant_option_id", columns={"merchant_option_id"})})
+ * @ORM\Entity
+ */
+class MerchantsSignals
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="merchant_option_id", type="integer", nullable=false)
+     */
+    private $merchantOptionId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expires", type="datetime", nullable=false)
+     */
+    private $expires;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=false)
+     */
+    private $created = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var \Merchants
+     *
+     * @ORM\ManyToOne(targetEntity="Merchants")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="merchant_id", referencedColumnName="id")
+     * })
+     */
+    private $merchant;
+
+
+}
+

@@ -1,0 +1,78 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Traders
+ *
+ * @ORM\Table(name="traders", indexes={@ORM\Index(name="country_id", columns={"country_id"})})
+ * @ORM\Entity
+ */
+class Traders
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="origin_id", type="string", length=150, nullable=false)
+     */
+    private $originId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=80, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=100, nullable=false)
+     */
+    private $password;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="balance", type="integer", nullable=false)
+     */
+    private $balance = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=false)
+     */
+    private $active = '1';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=false)
+     */
+    private $created = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var \Countries
+     *
+     * @ORM\ManyToOne(targetEntity="Countries")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     * })
+     */
+    private $country;
+
+
+}
+

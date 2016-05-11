@@ -1,0 +1,88 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Trades
+ *
+ * @ORM\Table(name="trades", indexes={@ORM\Index(name="binary_customer_id", columns={"trader_id"}), @ORM\Index(name="position_status_idposition_status_id", columns={"trade_status_id"}), @ORM\Index(name="position_status_id", columns={"trade_status_id"})})
+ * @ORM\Entity
+ */
+class Trades
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="amount", type="integer", nullable=false)
+     */
+    private $amount;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=false)
+     */
+    private $created = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="entry_rate", type="integer", nullable=false)
+     */
+    private $entryRate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="close_rate", type="integer", nullable=true)
+     */
+    private $closeRate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="buy_date", type="datetime", nullable=false)
+     */
+    private $buyDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiry_date", type="datetime", nullable=false)
+     */
+    private $expiryDate;
+
+    /**
+     * @var \TradesStatuses
+     *
+     * @ORM\ManyToOne(targetEntity="TradesStatuses")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="trade_status_id", referencedColumnName="id")
+     * })
+     */
+    private $tradeStatus;
+
+    /**
+     * @var \Traders
+     *
+     * @ORM\ManyToOne(targetEntity="Traders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="trader_id", referencedColumnName="id")
+     * })
+     */
+    private $trader;
+
+
+}
+

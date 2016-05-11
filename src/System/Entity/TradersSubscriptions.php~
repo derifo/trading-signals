@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TradersSubscriptions
+ *
+ * @ORM\Table(name="traders_subscriptions", indexes={@ORM\Index(name="trader_id", columns={"trader_id"})})
+ * @ORM\Entity
+ */
+class TradersSubscriptions
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
+     */
+    private $subscriptionDate = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="subscription_expires", type="datetime", nullable=false)
+     */
+    private $subscriptionExpires;
+
+    /**
+     * @var \Traders
+     *
+     * @ORM\ManyToOne(targetEntity="Traders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="trader_id", referencedColumnName="id")
+     * })
+     */
+    private $trader;
+
+
+}
+
