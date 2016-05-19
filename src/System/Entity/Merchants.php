@@ -15,7 +15,7 @@ class Merchants
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -57,9 +57,23 @@ class Merchants
     private $apiParam3;
 
     /**
-     * @var \Partners
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Partners")
+     * @ORM\Column(name="min_trade_amount", type="integer", nullable=false)
+     */
+    private $minTradeAmount = '50';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=false)
+     */
+    private $active = '1';
+
+    /**
+     * @var \System\Entity\Partners
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\Partners")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="patner_id", referencedColumnName="id")
      * })
@@ -67,14 +81,16 @@ class Merchants
     private $patner;
 
     /**
-     * @var \Intergrations
+     * @var \System\Entity\Intergrations
      *
-     * @ORM\ManyToOne(targetEntity="Intergrations")
+     * @ORM\ManyToOne(targetEntity="System\Entity\Intergrations")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="integration_id", referencedColumnName="id")
      * })
      */
     private $integration;
+
+
 
     /**
      * Get id
@@ -204,6 +220,54 @@ class Merchants
     public function getApiParam3()
     {
         return $this->apiParam3;
+    }
+
+    /**
+     * Set minTradeAmount
+     *
+     * @param integer $minTradeAmount
+     *
+     * @return Merchants
+     */
+    public function setMinTradeAmount($minTradeAmount)
+    {
+        $this->minTradeAmount = $minTradeAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get minTradeAmount
+     *
+     * @return integer
+     */
+    public function getMinTradeAmount()
+    {
+        return $this->minTradeAmount;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Merchants
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 
     /**

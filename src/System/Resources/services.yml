@@ -1,0 +1,51 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+
+    adapters.spotoption:
+        class: System\Service\Integration\Adapters\SpotOptionAdapter
+        arguments: ["@doctrine"]
+
+    adapters.container:
+        class: System\Service\Integration\AdaptersContainer
+        arguments: ["@service_container"]
+
+    signals.allocate:
+        class: System\Service\Signals\Allocate
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    signals.buy:
+        class: System\Service\Signals\Buy
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    signals.archive:
+        class: System\Service\Signals\Archive
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    signals.crud:
+      class: System\Service\Signals\Crud
+      arguments: [ "@doctrine" ]
+
+    trades.archive:
+        class: System\Service\Trades\Archive
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    merchants.promotion:
+        class: System\Service\Merchants\Promotion
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    merchants.archive_signals:
+        class: System\Service\Merchants\ArchiveSignals
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    merchants_signals.crud:
+      class: System\Service\MerchantsSignals\Crud
+      arguments: [ "@doctrine" ]
+
+    traders.crud:
+      class: System\Service\Traders\Crud
+      arguments: [ "@doctrine" ]
+

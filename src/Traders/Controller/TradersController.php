@@ -2,6 +2,8 @@
 
 namespace Traders\Controller;
 
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use System\Entity\Traders;
 use System\Helpers\Arr;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +17,45 @@ use FOS\RestBundle\Controller\Annotations\Get;
 
 class TradersController extends Controller
 {
+
+    /**
+     * @Get("/traders")
+     * @View()
+     */
+    public function findAllTradersAction(Request $request)
+    {
+        $filters = Arr::extract($request->query->all(), [  ]);
+
+        /**
+         * @var $trader Traders
+         */
+        $trader = $this->get('security.token_storage')->getToken()->getUser();
+        $filters['id'] = $trader->getId();
+
+        return $this->get('traders.crud')
+            ->findAll($filters);
+    }
+    
+    /**
+     * @Get("/traders/stats")
+     * @View()
+     */
+    public function getTraderStatsAction(Request $request)
+    {
+        try {
+            /**
+             * @var $trader Traders
+             */
+            $trader = $this->get('security.token_storage')->getToken()->getUser();
+
+            return $this->get('traders.statistics')->getTradesStatistics($trader);
+        }
+        catch(\Exception $e)
+        {
+            throw new BadRequestHttpException('SERVER_ERROR');
+        }
+    }
+
     /**
      * @Post("/login")
      * @View()

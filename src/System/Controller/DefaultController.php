@@ -18,9 +18,8 @@ class DefaultController extends Controller
             ->find(1);
 
 
-        $trader = $this->get('adapters.container')
-            ->getAdapter($merchant)
-            ->getTrader(5);
+        $trader = $this->get('signals.buy')
+            ->buySignal(1, 7, []);
 
         print_r($trader); die;
     }

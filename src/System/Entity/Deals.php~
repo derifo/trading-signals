@@ -1,0 +1,61 @@
+<?php
+
+namespace System\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Deals
+ *
+ * @ORM\Table(name="deals", indexes={@ORM\Index(name="id", columns={"id"})})
+ * @ORM\Entity
+ */
+class Deals
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=120, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="activation_cost", type="integer", nullable=false)
+     */
+    private $activationCost;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="signal_cost", type="integer", nullable=false)
+     */
+    private $signalCost;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="monthly_fee", type="integer", nullable=false)
+     */
+    private $monthlyFee;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duration", type="integer", nullable=false)
+     */
+    private $duration;
+
+
+}
+

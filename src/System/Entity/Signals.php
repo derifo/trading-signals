@@ -8,25 +8,18 @@ use Doctrine\ORM\Mapping as ORM;
  * Signals
  *
  * @ORM\Table(name="signals", indexes={@ORM\Index(name="asset_id", columns={"asset_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\Signals")
  */
 class Signals
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="asset_id", type="integer", nullable=false)
-     */
-    private $assetId;
 
     /**
      * @var boolean
@@ -84,6 +77,29 @@ class Signals
      */
     private $active = '1';
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="score_adjust", type="integer", nullable=false)
+     */
+    private $scoreAdjust;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="score", type="integer", nullable=false)
+     */
+    private $score;
+
+    /**
+     * @var \System\Entity\Assets
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\Assets")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
+     * })
+     */
+    private $asset;
 
 
     /**
@@ -94,30 +110,6 @@ class Signals
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set assetId
-     *
-     * @param integer $assetId
-     *
-     * @return Signals
-     */
-    public function setAssetId($assetId)
-    {
-        $this->assetId = $assetId;
-
-        return $this;
-    }
-
-    /**
-     * Get assetId
-     *
-     * @return integer
-     */
-    public function getAssetId()
-    {
-        return $this->assetId;
     }
 
     /**
@@ -310,5 +302,77 @@ class Signals
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set scoreAdjust
+     *
+     * @param integer $scoreAdjust
+     *
+     * @return Signals
+     */
+    public function setScoreAdjust($scoreAdjust)
+    {
+        $this->scoreAdjust = $scoreAdjust;
+
+        return $this;
+    }
+
+    /**
+     * Get scoreAdjust
+     *
+     * @return integer
+     */
+    public function getScoreAdjust()
+    {
+        return $this->scoreAdjust;
+    }
+
+    /**
+     * Set score
+     *
+     * @param integer $score
+     *
+     * @return Signals
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * Set asset
+     *
+     * @param \System\Entity\Assets $asset
+     *
+     * @return Signals
+     */
+    public function setAsset(\System\Entity\Assets $asset = null)
+    {
+        $this->asset = $asset;
+
+        return $this;
+    }
+
+    /**
+     * Get asset
+     *
+     * @return \System\Entity\Assets
+     */
+    public function getAsset()
+    {
+        return $this->asset;
     }
 }

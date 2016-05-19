@@ -34,9 +34,13 @@ abstract class AdapterBase {
         return $this;
     }
 
-    public function getTrader($trader_id) {}
+    abstract public function getTrader($trader_id);
 
-    public function getTraderTrades($trader_id) {}
+    abstract public function getTraders(array $options = []);
 
-    public function addTrade(array $data) {}
+    abstract public function getTraderTrades($trader_id);
+
+    abstract public function addTrade(array $data);
+
+    abstract public function getOptions($asset, array $custom_filters);
 }

@@ -10,7 +10,7 @@ use Serializable;
  * Traders
  *
  * @ORM\Table(name="traders", indexes={@ORM\Index(name="country_id", columns={"country_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\Traders")
  */
 class Traders implements UserInterface, Serializable
 {
@@ -74,6 +74,16 @@ class Traders implements UserInterface, Serializable
      * })
      */
     private $country;
+
+    /**
+     * @var \Merchants
+     *
+     * @ORM\ManyToOne(targetEntity="Merchants")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="merchant_id", referencedColumnName="id")
+     * })
+     */
+    private $merchant;
 
     /**
      * Get id
@@ -251,6 +261,30 @@ class Traders implements UserInterface, Serializable
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Set merchant
+     *
+     * @param \System\Entity\Merchants $merchant
+     *
+     * @return Traders
+     */
+    public function setMerchant(\System\Entity\Merchants $merchant = null)
+    {
+        $this->merchant = $merchant;
+
+        return $this;
+    }
+
+    /**
+     * Get merchant
+     *
+     * @return \System\Entity\Merchants
+     */
+    public function getMerchant()
+    {
+        return $this->merchant;
     }
 
     /**

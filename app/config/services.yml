@@ -4,10 +4,3 @@ parameters:
 #    parameter_name: value
 
 services:
-    adapters.spotoption:
-        class: System\Service\Integration\Adapters\SpotOptionAdapter
-        arguments: ["@doctrine"]
-
-    adapters.container:
-        class: System\Service\Integration\AdaptersContainer
-        arguments: ["@service_container"]

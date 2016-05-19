@@ -15,18 +15,18 @@ class Assets
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="system_name", type="string", length=80, nullable=false)
+     * @ORM\Column(name="socket_id", type="integer", nullable=false)
      */
-    private $systemName;
+    private $socketId;
 
     /**
      * @var string
@@ -35,7 +35,12 @@ class Assets
      */
     private $title;
 
-
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rate", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $rate;
 
     /**
      * Get id
@@ -48,29 +53,29 @@ class Assets
     }
 
     /**
-     * Set systemName
+     * Set socketId
      *
-     * @param string $systemName
+     * @param string $socketId
      *
      * @return Assets
      */
-    public function setSystemName($systemName)
+    public function setSocketId($socketId)
     {
-        $this->systemName = $systemName;
+        $this->socketId = $socketId;
 
         return $this;
     }
 
     /**
-     * Get systemName
+     * Get socketId
      *
      * @return string
      */
-    public function getSystemName()
+    public function getSocketId()
     {
-        return $this->systemName;
+        return $this->socketId;
     }
-
+    
     /**
      * Set title
      *
@@ -93,5 +98,29 @@ class Assets
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set rate
+     *
+     * @param float $rate
+     *
+     * @return Assets
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    /**
+     * Get rate
+     *
+     * @return float
+     */
+    public function getRate()
+    {
+        return $this->rate;
     }
 }

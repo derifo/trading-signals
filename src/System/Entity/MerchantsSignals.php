@@ -7,15 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * MerchantsSignals
  *
- * @ORM\Table(name="merchants_signals", indexes={@ORM\Index(name="merchant_id", columns={"merchant_id"}), @ORM\Index(name="merchant_id_2", columns={"merchant_id"}), @ORM\Index(name="merchant_option_id", columns={"merchant_option_id"})})
- * @ORM\Entity
+ * @ORM\Table(name="merchants_signals", indexes={@ORM\Index(name="merchant_id", columns={"merchant_id"}), @ORM\Index(name="merchant_id_2", columns={"merchant_id"}), @ORM\Index(name="merchant_option_id", columns={"merchant_option_id"}), @ORM\Index(name="signal_id", columns={"signal_id"})})
+ * @ORM\Entity(repositoryClass="System\Repository\MerchantsSignals")
  */
 class MerchantsSignals
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -27,6 +27,13 @@ class MerchantsSignals
      * @ORM\Column(name="merchant_option_id", type="integer", nullable=false)
      */
     private $merchantOptionId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="active", type="integer", nullable=false)
+     */
+    private $active = '1';
 
     /**
      * @var \DateTime
@@ -43,14 +50,24 @@ class MerchantsSignals
     private $created = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var \Merchants
+     * @var \System\Entity\Merchants
      *
-     * @ORM\ManyToOne(targetEntity="Merchants")
+     * @ORM\ManyToOne(targetEntity="System\Entity\Merchants")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="merchant_id", referencedColumnName="id")
      * })
      */
     private $merchant;
+
+    /**
+     * @var \System\Entity\Signals
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\Signals")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="signal_id", referencedColumnName="id")
+     * })
+     */
+    private $signal;
 
 
 
@@ -86,6 +103,30 @@ class MerchantsSignals
     public function getMerchantOptionId()
     {
         return $this->merchantOptionId;
+    }
+
+    /**
+     * Set active
+     *
+     * @param integer $active
+     *
+     * @return MerchantsSignals
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return integer
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 
     /**
@@ -158,5 +199,29 @@ class MerchantsSignals
     public function getMerchant()
     {
         return $this->merchant;
+    }
+
+    /**
+     * Set signal
+     *
+     * @param \System\Entity\Signals $signal
+     *
+     * @return MerchantsSignals
+     */
+    public function setSignal(\System\Entity\Signals $signal = null)
+    {
+        $this->signal = $signal;
+
+        return $this;
+    }
+
+    /**
+     * Get signal
+     *
+     * @return \System\Entity\Signals
+     */
+    public function getSignal()
+    {
+        return $this->signal;
     }
 }

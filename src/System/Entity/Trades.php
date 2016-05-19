@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Trades
  *
- * @ORM\Table(name="trades", indexes={@ORM\Index(name="binary_customer_id", columns={"trader_id"}), @ORM\Index(name="position_status_idposition_status_id", columns={"trade_status_id"}), @ORM\Index(name="position_status_id", columns={"trade_status_id"})})
+ * @ORM\Table(name="trades", indexes={@ORM\Index(name="binary_customer_id", columns={"trader_id"}), @ORM\Index(name="position_status_idposition_status_id", columns={"trade_status_id"}), @ORM\Index(name="position_status_id", columns={"trade_status_id"}), @ORM\Index(name="merchant_signal_id", columns={"merchant_signal_id"})})
  * @ORM\Entity
  */
 class Trades
@@ -15,11 +15,18 @@ class Trades
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="merchant_trade_id", type="integer", nullable=false)
+     */
+    private $merchantTradeId;
 
     /**
      * @var integer
@@ -36,9 +43,9 @@ class Trades
     private $created = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="entry_rate", type="integer", nullable=false)
+     * @ORM\Column(name="entry_rate", type="float", precision=10, scale=0, nullable=false)
      */
     private $entryRate;
 
@@ -64,9 +71,30 @@ class Trades
     private $expiryDate;
 
     /**
-     * @var \TradesStatuses
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="TradesStatuses")
+     * @ORM\Column(name="scoring", type="integer", nullable=false)
+     */
+    private $scoring;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="profit", type="integer", nullable=false)
+     */
+    private $profit;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="payout", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $payout = '0';
+
+    /**
+     * @var \System\Entity\TradesStatuses
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\TradesStatuses")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="trade_status_id", referencedColumnName="id")
      * })
@@ -74,14 +102,24 @@ class Trades
     private $tradeStatus;
 
     /**
-     * @var \Traders
+     * @var \System\Entity\Traders
      *
-     * @ORM\ManyToOne(targetEntity="Traders")
+     * @ORM\ManyToOne(targetEntity="System\Entity\Traders")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="trader_id", referencedColumnName="id")
      * })
      */
     private $trader;
+
+    /**
+     * @var \System\Entity\MerchantsSignals
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\MerchantsSignals")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="merchant_signal_id", referencedColumnName="id")
+     * })
+     */
+    private $merchantSignal;
 
 
 
@@ -93,6 +131,30 @@ class Trades
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set merchantTradeId
+     *
+     * @param integer $merchantTradeId
+     *
+     * @return Trades
+     */
+    public function setMerchantTradeId($merchantTradeId)
+    {
+        $this->merchantTradeId = $merchantTradeId;
+
+        return $this;
+    }
+
+    /**
+     * Get merchantTradeId
+     *
+     * @return integer
+     */
+    public function getMerchantTradeId()
+    {
+        return $this->merchantTradeId;
     }
 
     /**
@@ -146,7 +208,7 @@ class Trades
     /**
      * Set entryRate
      *
-     * @param integer $entryRate
+     * @param float $entryRate
      *
      * @return Trades
      */
@@ -160,7 +222,7 @@ class Trades
     /**
      * Get entryRate
      *
-     * @return integer
+     * @return float
      */
     public function getEntryRate()
     {
@@ -240,6 +302,78 @@ class Trades
     }
 
     /**
+     * Set scoring
+     *
+     * @param integer $scoring
+     *
+     * @return Trades
+     */
+    public function setScoring($scoring)
+    {
+        $this->scoring = $scoring;
+
+        return $this;
+    }
+
+    /**
+     * Get scoring
+     *
+     * @return integer
+     */
+    public function getScoring()
+    {
+        return $this->scoring;
+    }
+
+    /**
+     * Set profit
+     *
+     * @param integer $profit
+     *
+     * @return Trades
+     */
+    public function setProfit($profit)
+    {
+        $this->profit = $profit;
+
+        return $this;
+    }
+
+    /**
+     * Get profit
+     *
+     * @return integer
+     */
+    public function getProfit()
+    {
+        return $this->profit;
+    }
+
+    /**
+     * Set payout
+     *
+     * @param float $payout
+     *
+     * @return Trades
+     */
+    public function setPayout($payout)
+    {
+        $this->payout = $payout;
+
+        return $this;
+    }
+
+    /**
+     * Get payout
+     *
+     * @return float
+     */
+    public function getPayout()
+    {
+        return $this->payout;
+    }
+
+    /**
      * Set tradeStatus
      *
      * @param \System\Entity\TradesStatuses $tradeStatus
@@ -285,5 +419,29 @@ class Trades
     public function getTrader()
     {
         return $this->trader;
+    }
+
+    /**
+     * Set merchantSignal
+     *
+     * @param \System\Entity\MerchantsSignals $merchantSignal
+     *
+     * @return Trades
+     */
+    public function setMerchantSignal(\System\Entity\MerchantsSignals $merchantSignal = null)
+    {
+        $this->merchantSignal = $merchantSignal;
+
+        return $this;
+    }
+
+    /**
+     * Get merchantSignal
+     *
+     * @return \System\Entity\MerchantsSignals
+     */
+    public function getMerchantSignal()
+    {
+        return $this->merchantSignal;
     }
 }

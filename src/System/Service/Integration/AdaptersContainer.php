@@ -9,6 +9,7 @@
 namespace System\Service\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use System\Service\Integration\Adapters\AdapterBase;
 
 class AdaptersContainer {
 
@@ -20,6 +21,10 @@ class AdaptersContainer {
 
     }
 
+    /**
+     * @param $merchant
+     * @return AdapterBase
+     */
     public function getAdapter($merchant)
     {
         return $this->container

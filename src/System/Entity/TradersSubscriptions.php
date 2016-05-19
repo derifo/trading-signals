@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TradersSubscriptions
  *
- * @ORM\Table(name="traders_subscriptions", indexes={@ORM\Index(name="trader_id", columns={"trader_id"})})
+ * @ORM\Table(name="traders_subscriptions", indexes={@ORM\Index(name="trader_id", columns={"trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
  * @ORM\Entity
  */
 class TradersSubscriptions
@@ -15,7 +15,7 @@ class TradersSubscriptions
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,9 +24,9 @@ class TradersSubscriptions
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
+     * @ORM\Column(name="subscription_started", type="datetime", nullable=true)
      */
-    private $subscriptionDate = 'CURRENT_TIMESTAMP';
+    private $subscriptionStarted = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \DateTime
@@ -36,14 +36,31 @@ class TradersSubscriptions
     private $subscriptionExpires;
 
     /**
-     * @var \Traders
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Traders")
+     * @ORM\Column(name="active", type="integer", nullable=false)
+     */
+    private $active = '1';
+
+    /**
+     * @var \System\Entity\Traders
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\Traders")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="trader_id", referencedColumnName="id")
      * })
      */
     private $trader;
+
+    /**
+     * @var \System\Entity\Deals
+     *
+     * @ORM\ManyToOne(targetEntity="System\Entity\Deals")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="deal_id", referencedColumnName="id")
+     * })
+     */
+    private $deal;
 
 
 
@@ -58,27 +75,27 @@ class TradersSubscriptions
     }
 
     /**
-     * Set subscriptionDate
+     * Set subscriptionStarted
      *
-     * @param \DateTime $subscriptionDate
+     * @param \DateTime $subscriptionStarted
      *
      * @return TradersSubscriptions
      */
-    public function setSubscriptionDate($subscriptionDate)
+    public function setSubscriptionStarted($subscriptionStarted)
     {
-        $this->subscriptionDate = $subscriptionDate;
+        $this->subscriptionStarted = $subscriptionStarted;
 
         return $this;
     }
 
     /**
-     * Get subscriptionDate
+     * Get subscriptionStarted
      *
      * @return \DateTime
      */
-    public function getSubscriptionDate()
+    public function getSubscriptionStarted()
     {
-        return $this->subscriptionDate;
+        return $this->subscriptionStarted;
     }
 
     /**
@@ -106,6 +123,30 @@ class TradersSubscriptions
     }
 
     /**
+     * Set active
+     *
+     * @param integer $active
+     *
+     * @return TradersSubscriptions
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return integer
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Set trader
      *
      * @param \System\Entity\Traders $trader
@@ -127,5 +168,29 @@ class TradersSubscriptions
     public function getTrader()
     {
         return $this->trader;
+    }
+
+    /**
+     * Set deal
+     *
+     * @param \System\Entity\Deals $deal
+     *
+     * @return TradersSubscriptions
+     */
+    public function setDeal(\System\Entity\Deals $deal = null)
+    {
+        $this->deal = $deal;
+
+        return $this;
+    }
+
+    /**
+     * Get deal
+     *
+     * @return \System\Entity\Deals
+     */
+    public function getDeal()
+    {
+        return $this->deal;
     }
 }

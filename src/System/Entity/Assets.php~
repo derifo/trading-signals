@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace System\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,7 +15,7 @@ class Assets
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,16 +24,16 @@ class Assets
     /**
      * @var string
      *
-     * @ORM\Column(name="system_name", type="string", length=80, nullable=false)
-     */
-    private $systemName;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="title", type="string", length=80, nullable=false)
      */
     private $title;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rate", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $rate;
 
 
 }

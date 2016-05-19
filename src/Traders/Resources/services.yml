@@ -11,3 +11,7 @@ services:
     security.traders.login:
         class: Traders\Security\TradersLogin
         arguments: [ "@doctrine", "@security.token_storage", "@security.password_encoder" ]
+
+    traders.statistics:
+        class: Traders\Service\Traders\Statistics
+        arguments: [ "@doctrine" ]
