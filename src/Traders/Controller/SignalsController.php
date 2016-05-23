@@ -4,6 +4,7 @@ namespace Traders\Controller;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use System\Entity\Signals;
+use System\Entity\Traders;
 use System\Helpers\Arr;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,5 +30,22 @@ class SignalsController extends Controller
 
         return $this->get('signals.crud')
             ->findAll($filters, $settings);
+    }
+
+    /**
+     * @Post("/buy")
+     * @View()
+     */
+    public function buySignalAction(Request $request)
+    {
+        $options = Arr::extract($request->request->all(), [ 'amount' ]);
+
+        /**
+         * @var $trader Traders
+         */
+        $trader = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->get('signals.buy')
+            ->buySignal($trader->getId(), $request->request->get('signal_id'), $options);
     }
 }
