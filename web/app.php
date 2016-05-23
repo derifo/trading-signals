@@ -7,7 +7,7 @@ if (isset($_SERVER['HTTP_REFERER']))
     $url = parse_url($_SERVER['HTTP_REFERER']);
     $url = $url['scheme'].'://tradingsignals.tech';
     header('Access-Control-Allow-Origin: '.$url);
-    header('Access-Control-Allow-Credentials: true');   
+    header('Access-Control-Allow-Credentials: true');
 }
 
 /**
