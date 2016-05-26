@@ -19,7 +19,7 @@ services:
 
     signals.buy:
         class: System\Service\Signals\Buy
-        arguments: [ "@doctrine", "@adapters.container" ]
+        arguments: [ "@doctrine", "@adapters.container", "@traders.crud" ]
 
     signals.archive:
         class: System\Service\Signals\Archive
@@ -32,6 +32,10 @@ services:
     trades.archive:
         class: System\Service\Trades\Archive
         arguments: [ "@doctrine", "@adapters.container" ]
+
+    trades.crud:
+        class: System\Service\Trades\Crud
+        arguments: [ "@doctrine" ]
 
     merchants.promotion:
         class: System\Service\Merchants\Promotion
@@ -47,5 +51,5 @@ services:
 
     traders.crud:
       class: System\Service\Traders\Crud
-      arguments: [ "@doctrine" ]
+      arguments: [ "@doctrine", "@adapters.container" ]
 

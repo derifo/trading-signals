@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Trades
  *
  * @ORM\Table(name="trades", indexes={@ORM\Index(name="binary_customer_id", columns={"trader_id"}), @ORM\Index(name="position_status_idposition_status_id", columns={"trade_status_id"}), @ORM\Index(name="position_status_id", columns={"trade_status_id"}), @ORM\Index(name="merchant_signal_id", columns={"merchant_signal_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\Trades")
  */
 class Trades
 {

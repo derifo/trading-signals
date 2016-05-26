@@ -16,6 +16,7 @@ use System\Entity\Traders;
 use System\Entity\Trades;
 use System\Helpers\Arr;
 use System\Service\Integration\AdaptersContainer;
+use System\Service\Traders\Crud;
 
 class Buy {
 
@@ -29,10 +30,16 @@ class Buy {
      */
     private $adapters;
 
-    public function __construct(Registry $doctrine, AdaptersContainer $adapters)
+    /**
+     * @var $traders_crud Crud
+     */
+    private $traders_crud;
+
+    public function __construct(Registry $doctrine, AdaptersContainer $adapters, Crud $traders_crud)
     {
         $this->doctrine = $doctrine;
         $this->adapters = $adapters;
+        $this->traders_crud = $traders_crud;
     }
 
     public function buySignal($trader_id, $signal_id, $options)
@@ -97,7 +104,10 @@ class Buy {
             $em->persist($trade);
             $em->flush();
         }
-        
+
+        // Update customer balance from the integration
+        $this->traders_crud->updateBalance($trader);
+
         return $results;
     }
 }

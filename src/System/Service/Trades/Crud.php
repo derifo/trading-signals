@@ -6,7 +6,7 @@
  * Time: 11:33
  */
 
-namespace System\Service\Traders;
+namespace System\Service\Trades;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use System\Entity\Merchants;
@@ -21,5 +21,5 @@ use System\Service\Integration\AdaptersContainer;
 
 class Crud extends BaseCrud {
 
-    const ENTITY = 'System:Traders';
+    const ENTITY = 'System:Trades';
 }
