@@ -25,7 +25,7 @@ class TradesController extends Controller
      */
     public function findAllTradesAction(Request $request)
     {
-        $filters = Arr::extract($request->query->all(), [ 'active' ]);
+        $filters = Arr::extract($request->query->all(), [ 'active', 'tradeStatus' ]);
         $settings = Arr::extract($request->query->all(), [ 'limit', 'offset' ]);
 
         /**
