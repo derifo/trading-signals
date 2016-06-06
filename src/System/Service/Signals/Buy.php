@@ -73,7 +73,7 @@ class Buy {
             ->findOneBy([ 'merchant' => $merchant, 'signal' => $signal ]);
 
         $data = [
-            'trader_id' => $trader->getId(),
+            'trader_id' => $trader->getOriginId(),
             'option_id' => $merchant_signal->getMerchantOptionId(),
             'direction' => $signal->getDirection(),
             'amount' => Arr::get($options, 'amount', $merchant->getMinTradeAmount())

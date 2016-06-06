@@ -186,7 +186,6 @@ class SpotOptionAdapter extends AdapterBase {
         ];
 
         $trade = $this->requestAPI($request_data);
-
         if($error = $this->checkError($trade))
         {
             return [
