@@ -37,12 +37,20 @@ services:
         class: System\Service\Trades\Crud
         arguments: [ "@doctrine" ]
 
+    synced_traders.crud:
+        class: System\Service\SyncedTraders\Crud
+        arguments: [ "@doctrine" ]
+
     merchants.promotion:
         class: System\Service\Merchants\Promotion
         arguments: [ "@doctrine", "@adapters.container" ]
 
     merchants.archive_signals:
         class: System\Service\Merchants\ArchiveSignals
+        arguments: [ "@doctrine", "@adapters.container" ]
+
+    merchants.sync_traders:
+        class: System\Service\Merchants\SyncTraders
         arguments: [ "@doctrine", "@adapters.container" ]
 
     merchants_signals.crud:
@@ -52,4 +60,8 @@ services:
     traders.crud:
       class: System\Service\Traders\Crud
       arguments: [ "@doctrine", "@adapters.container" ]
+
+    traders_promotions.generate:
+      class: System\Service\TradersPromotions\Generate
+      arguments: [ "@doctrine" ]
 

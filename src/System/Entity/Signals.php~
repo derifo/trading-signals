@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Signals
  *
  * @ORM\Table(name="signals", indexes={@ORM\Index(name="asset_id", columns={"asset_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\Signals")
  */
 class Signals
 {
@@ -100,7 +100,6 @@ class Signals
      * })
      */
     private $asset;
-
 
 
     /**

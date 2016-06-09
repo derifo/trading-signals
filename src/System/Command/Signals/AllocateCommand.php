@@ -39,3 +39,5 @@ class AllocateCommand extends ContainerAwareCommand
         $allocate->allocateAll();
     }
 }
+
+// 99L69244GM077662C

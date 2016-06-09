@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TradersPromotions
  *
- * @ORM\Table(name="traders_promotions", indexes={@ORM\Index(name="merchant_id", columns={"merchant_id"}), @ORM\Index(name="trader_id", columns={"trader_id"})})
+ * @ORM\Table(name="traders_promotions", indexes={@ORM\Index(name="trader_id", columns={"synced_trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
  * @ORM\Entity
  */
 class TradersPromotions
@@ -15,25 +15,11 @@ class TradersPromotions
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="merchant_id", type="integer", nullable=false)
-     */
-    private $merchantId;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="trader_id", type="integer", nullable=true)
-     */
-    private $traderId;
 
     /**
      * @var string
@@ -43,11 +29,38 @@ class TradersPromotions
     private $promotionCode;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="used", type="boolean", nullable=false)
+     */
+    private $used = '0';
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime", nullable=false)
      */
     private $created;
+
+    /**
+     * @var \Deals
+     *
+     * @ORM\ManyToOne(targetEntity="Deals")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="deal_id", referencedColumnName="id")
+     * })
+     */
+    private $deal;
+
+    /**
+     * @var \SyncedTraders
+     *
+     * @ORM\ManyToOne(targetEntity="SyncedTraders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="synced_trader_id", referencedColumnName="id")
+     * })
+     */
+    private $syncedTrader;
 
 
 
@@ -59,54 +72,6 @@ class TradersPromotions
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set merchantId
-     *
-     * @param integer $merchantId
-     *
-     * @return TradersPromotions
-     */
-    public function setMerchantId($merchantId)
-    {
-        $this->merchantId = $merchantId;
-
-        return $this;
-    }
-
-    /**
-     * Get merchantId
-     *
-     * @return integer
-     */
-    public function getMerchantId()
-    {
-        return $this->merchantId;
-    }
-
-    /**
-     * Set traderId
-     *
-     * @param integer $traderId
-     *
-     * @return TradersPromotions
-     */
-    public function setTraderId($traderId)
-    {
-        $this->traderId = $traderId;
-
-        return $this;
-    }
-
-    /**
-     * Get traderId
-     *
-     * @return integer
-     */
-    public function getTraderId()
-    {
-        return $this->traderId;
     }
 
     /**
@@ -134,6 +99,30 @@ class TradersPromotions
     }
 
     /**
+     * Set used
+     *
+     * @param boolean $used
+     *
+     * @return TradersPromotions
+     */
+    public function setUsed($used)
+    {
+        $this->used = $used;
+
+        return $this;
+    }
+
+    /**
+     * Get used
+     *
+     * @return boolean
+     */
+    public function getUsed()
+    {
+        return $this->used;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
@@ -155,5 +144,53 @@ class TradersPromotions
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * Set deal
+     *
+     * @param \System\Entity\Deals $deal
+     *
+     * @return TradersPromotions
+     */
+    public function setDeal(\System\Entity\Deals $deal = null)
+    {
+        $this->deal = $deal;
+
+        return $this;
+    }
+
+    /**
+     * Get deal
+     *
+     * @return \System\Entity\Deals
+     */
+    public function getDeal()
+    {
+        return $this->deal;
+    }
+
+    /**
+     * Set syncedTrader
+     *
+     * @param \System\Entity\SyncedTraders $syncedTrader
+     *
+     * @return TradersPromotions
+     */
+    public function setSyncedTrader(\System\Entity\SyncedTraders $syncedTrader = null)
+    {
+        $this->syncedTrader = $syncedTrader;
+
+        return $this;
+    }
+
+    /**
+     * Get syncedTrader
+     *
+     * @return \System\Entity\SyncedTraders
+     */
+    public function getSyncedTrader()
+    {
+        return $this->syncedTrader;
     }
 }

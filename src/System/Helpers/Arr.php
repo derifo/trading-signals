@@ -312,11 +312,11 @@ class Arr
 	 * @param   mixed  $default  default value
 	 * @return  array
 	 */
-	public static function extract($array, array $paths, $default = null)
+	public static function extract($array, array $paths, $defaults = [])
 	{
 		$found = array();
-		foreach ($paths as $path) {
-			static::setPath($found, $path, static::path($array, $path, $default));
+		foreach ($paths as $idx => $path) {
+			static::setPath($found, $path, static::path($array, $path, Arr::get($defaults, $idx)));
 		}
 
 		return array_filter($found);

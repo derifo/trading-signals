@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new System\System(),
             new Traders\Traders(),
+            new Partners\Partners()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

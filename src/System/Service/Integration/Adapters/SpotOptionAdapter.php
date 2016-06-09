@@ -48,12 +48,12 @@ class SpotOptionAdapter extends AdapterBase {
 
         if (Arr::get($options, 'from'))
         {
-            $data['leadConversionDate']['max'] = '2012-05-16 00:00:00';
+            $data['FILTER']['regTime']['min'] = Arr::get($options, 'from');
         }
 
         if (Arr::get($options, 'to'))
         {
-            $data['leadConversionDate']['max'] = date('Y_m_d', strtotime(Arr::get($options, 'from')));
+            $data['FILTER']['regTime']['max'] = Arr::get($options, 'to');
         }
 
         $traders = $this->requestAPI($data);
@@ -67,6 +67,22 @@ class SpotOptionAdapter extends AdapterBase {
         }
 
         $traders = array_values(Arr::get($traders, 'Customer'));
+
+        foreach($traders as &$trader)
+        {
+            $trader = [
+                'id' => Arr::get($trader, 'id'),
+                'first_name' => Arr::get($trader, 'FirstName'),
+                'last_name' => Arr::get($trader, 'LastName'),
+                'registration_date' => new \DateTime(Arr::get($trader, 'regTime')),
+                'ftd_date' => Arr::get($trader, 'firstDepositDate') == '0000-00-00 00:00:00' ? NULL
+                    : new \DateTime(Arr::get($trader, 'firstDepositDate')),
+                'email' => Arr::get($trader, 'email'),
+                'phone' => Arr::get($trader, 'phoneNumber'),
+                'is_ftd' => Arr::get($trader, 'firstDepositDate') != '0000-00-00 00:00:00' ? 1 : 0,
+                'balance' => Arr::get($trader, 'accountBalance', 0)
+            ];
+        }
 
         return [
             'status'    => TRUE,

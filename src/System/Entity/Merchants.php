@@ -75,10 +75,10 @@ class Merchants
      *
      * @ORM\ManyToOne(targetEntity="System\Entity\Partners")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="patner_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="partner_id", referencedColumnName="id")
      * })
      */
-    private $patner;
+    private $partner;
 
     /**
      * @var \System\Entity\Intergrations
@@ -277,9 +277,9 @@ class Merchants
      *
      * @return Merchants
      */
-    public function setPatner(\System\Entity\Partners $patner = null)
+    public function setPartner(\System\Entity\Partners $partner = null)
     {
-        $this->patner = $patner;
+        $this->patner = $partner;
 
         return $this;
     }
@@ -289,9 +289,9 @@ class Merchants
      *
      * @return \System\Entity\Partners
      */
-    public function getPatner()
+    public function getPartner()
     {
-        return $this->patner;
+        return $this->partner;
     }
 
     /**

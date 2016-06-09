@@ -15,7 +15,7 @@ class Deals
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -27,13 +27,6 @@ class Deals
      * @ORM\Column(name="title", type="string", length=120, nullable=false)
      */
     private $title;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="activation_cost", type="integer", nullable=false)
-     */
-    private $activationCost;
 
     /**
      * @var integer
@@ -90,30 +83,6 @@ class Deals
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set activationCost
-     *
-     * @param integer $activationCost
-     *
-     * @return Deals
-     */
-    public function setActivationCost($activationCost)
-    {
-        $this->activationCost = $activationCost;
-
-        return $this;
-    }
-
-    /**
-     * Get activationCost
-     *
-     * @return integer
-     */
-    public function getActivationCost()
-    {
-        return $this->activationCost;
     }
 
     /**

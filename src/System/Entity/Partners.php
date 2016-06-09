@@ -2,7 +2,10 @@
 
 namespace System\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Serializable;
 
 /**
  * Partners
@@ -10,12 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="partners")
  * @ORM\Entity
  */
-class Partners
+class Partners implements UserInterface, Serializable
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -49,7 +52,17 @@ class Partners
      */
     private $created = 'CURRENT_TIMESTAMP';
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Merchants", mappedBy="partner")
+     */
+    private $merchants;
 
+    public function __construct()
+    {
+        $this->merchants = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -59,6 +72,16 @@ class Partners
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get Merchants
+     *
+     * @return ArrayCollection
+     */
+    public function getMerchants()
+    {
+        return $this->merchants;
     }
 
     /**
@@ -155,5 +178,58 @@ class Partners
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        return [ 'ROLE_PARTNER' ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials() {}
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->password,
+        ]);
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        return null;
     }
 }

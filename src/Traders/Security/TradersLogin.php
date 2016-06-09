@@ -39,8 +39,7 @@ class TradersLogin {
     {
         $this->doctrine = $doctrine;
         $this->token_storage = $token_storage;
-        $this->encoder = $encoder;
-    }
+     }
 
     public function setCredentials($data)
     {

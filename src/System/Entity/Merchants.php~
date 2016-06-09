@@ -75,10 +75,10 @@ class Merchants
      *
      * @ORM\ManyToOne(targetEntity="System\Entity\Partners")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="patner_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="partner_id", referencedColumnName="id")
      * })
      */
-    private $patner;
+    private $partner;
 
     /**
      * @var \System\Entity\Intergrations
@@ -91,5 +91,230 @@ class Merchants
     private $integration;
 
 
-}
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Merchants
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set tag
+     *
+     * @param string $tag
+     *
+     * @return Merchants
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get tag
+     *
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * Set apiParam1
+     *
+     * @param string $apiParam1
+     *
+     * @return Merchants
+     */
+    public function setApiParam1($apiParam1)
+    {
+        $this->apiParam1 = $apiParam1;
+
+        return $this;
+    }
+
+    /**
+     * Get apiParam1
+     *
+     * @return string
+     */
+    public function getApiParam1()
+    {
+        return $this->apiParam1;
+    }
+
+    /**
+     * Set apiParam2
+     *
+     * @param string $apiParam2
+     *
+     * @return Merchants
+     */
+    public function setApiParam2($apiParam2)
+    {
+        $this->apiParam2 = $apiParam2;
+
+        return $this;
+    }
+
+    /**
+     * Get apiParam2
+     *
+     * @return string
+     */
+    public function getApiParam2()
+    {
+        return $this->apiParam2;
+    }
+
+    /**
+     * Set apiParam3
+     *
+     * @param string $apiParam3
+     *
+     * @return Merchants
+     */
+    public function setApiParam3($apiParam3)
+    {
+        $this->apiParam3 = $apiParam3;
+
+        return $this;
+    }
+
+    /**
+     * Get apiParam3
+     *
+     * @return string
+     */
+    public function getApiParam3()
+    {
+        return $this->apiParam3;
+    }
+
+    /**
+     * Set minTradeAmount
+     *
+     * @param integer $minTradeAmount
+     *
+     * @return Merchants
+     */
+    public function setMinTradeAmount($minTradeAmount)
+    {
+        $this->minTradeAmount = $minTradeAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get minTradeAmount
+     *
+     * @return integer
+     */
+    public function getMinTradeAmount()
+    {
+        return $this->minTradeAmount;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Merchants
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set patner
+     *
+     * @param \System\Entity\Partners $patner
+     *
+     * @return Merchants
+     */
+    public function setPartner(\System\Entity\Partners $partner = null)
+    {
+        $this->patner = $partner;
+
+        return $this;
+    }
+
+    /**
+     * Get patner
+     *
+     * @return \System\Entity\Partners
+     */
+    public function getPartner()
+    {
+        return $this->partner;
+    }
+
+    /**
+     * Set integration
+     *
+     * @param \System\Entity\Intergrations $integration
+     *
+     * @return Merchants
+     */
+    public function setIntegration(\System\Entity\Intergrations $integration = null)
+    {
+        $this->integration = $integration;
+
+        return $this;
+    }
+
+    /**
+     * Get integration
+     *
+     * @return \System\Entity\Intergrations
+     */
+    public function getIntegration()
+    {
+        return $this->integration;
+    }
+}

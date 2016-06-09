@@ -43,5 +43,86 @@ class Countries
     private $locale = 'en_US';
 
 
-}
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Countries
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set iso2
+     *
+     * @param string $iso2
+     *
+     * @return Countries
+     */
+    public function setIso2($iso2)
+    {
+        $this->iso2 = $iso2;
+
+        return $this;
+    }
+
+    /**
+     * Get iso2
+     *
+     * @return string
+     */
+    public function getIso2()
+    {
+        return $this->iso2;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     *
+     * @return Countries
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+}

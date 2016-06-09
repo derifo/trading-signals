@@ -17,6 +17,8 @@ class TradersEntryPoint implements AuthenticationEntryPointInterface
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
+        die('123');
+
         $response = new Response("", Response::HTTP_UNAUTHORIZED);
 
         return $response;

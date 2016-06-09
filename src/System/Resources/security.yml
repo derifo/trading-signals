@@ -1,0 +1,51 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    firewalls:
+        traders:
+            pattern: ^/api/traders
+            anonymous: ~
+            entry_point: security.tradersEntryPoint
+            http_basic:
+                realm: "Secured Traders Area"
+            logout:
+              path:   /logout
+              target: /
+        partners:
+            pattern: ^/api/partners
+            anonymous: ~
+            entry_point: security.partnersEntryPoint
+            http_basic:
+                realm: "Secured Partners Area"
+            logout:
+              path:   /partners/logout
+              target: /partners
+    access_control:
+        - { path: ^/api/traders/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_wdt/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_profiler/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/traders/*, roles: ROLE_TRADER  }
+        - { path: ^/api/partners/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_wdt/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_profiler/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/partners/*, roles: ROLE_PARTNER  }
+        # Include the following line to also secure the /admin path itself
+        # - { path: ^/admin$, roles: ROLE_ADMIN }
+    encoders:
+        System\Entity\Traders:
+            algorithm: sha1
+            cost: 16
+        System\Entity\Partners:
+            algorithm: sha1
+            cost: 16
+
+    role_hierarchy:
+        ROLE_TRADER: ROLE_TRADER
+        ROLE_PARTNER: ROLE_PARTNER
+        ROLE_ADMIN: [ ROLE_TRADER, ROLE_PARTNER ]
+
+    providers:
+        customers:
+            entity: { class: System:Traders, property: email }
+        partners:
+            entity: { class: System:Partners, property: email }

@@ -6,3 +6,8 @@ traders:
     resource: "@Traders/Controller/"
     type:     annotation
     prefix: /api/traders
+
+partners:
+    resource: "@Partners/Controller/"
+    type:     annotation
+    prefix: /api/partners

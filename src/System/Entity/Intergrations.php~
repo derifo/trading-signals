@@ -36,5 +36,62 @@ class Intergrations
     private $adapter;
 
 
-}
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Intergrations
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set adapter
+     *
+     * @param string $adapter
+     *
+     * @return Intergrations
+     */
+    public function setAdapter($adapter)
+    {
+        $this->adapter = $adapter;
+
+        return $this;
+    }
+
+    /**
+     * Get adapter
+     *
+     * @return string
+     */
+    public function getAdapter()
+    {
+        return $this->adapter;
+    }
+}

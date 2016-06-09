@@ -35,7 +35,21 @@ class TradersController extends Controller
         return $this->get('traders.crud')
             ->findAll($filters);
     }
-    
+
+
+    /**
+     * @Get("/register")
+     * @View()
+     */
+    public function registerTraderAction(Request $request)
+    {
+        $data = Arr::extract($request->request->all(), [ 'email', 'password', 'code' ]);
+
+        return $this->get('traders.register')
+            ->setData($data)
+            ->register();
+    }
+
     /**
      * @Get("/traders/stats")
      * @View()
