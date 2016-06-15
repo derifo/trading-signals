@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 if (isset($_SERVER['HTTP_REFERER']))
 {
     $url = parse_url($_SERVER['HTTP_REFERER']);
-    $url = $url['scheme'].'://tradingsignals.tech';
+    $url = $url['scheme'].'://'.$url['host'].(isset($url['port']) && $url['port'] != 80 && $url['port'] != 443 ? (':'.$url['port']) : '');
     header('Access-Control-Allow-Origin: '.$url);
     header('Access-Control-Allow-Credentials: true');
 }
