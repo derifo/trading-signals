@@ -37,8 +37,8 @@ services:
         class: System\Service\Trades\Crud
         arguments: [ "@doctrine" ]
 
-    synced_traders.crud:
-        class: System\Service\SyncedTraders\Crud
+    merchants_traders.crud:
+        class: System\Service\MerchantsTraders\Crud
         arguments: [ "@doctrine" ]
 
     merchants.promotion:
@@ -63,5 +63,13 @@ services:
 
     traders_promotions.generate:
       class: System\Service\TradersPromotions\Generate
+      arguments: [ "@doctrine" ]
+
+    traders_deals.crud:
+      class: System\Service\TradersDeals\Crud
+      arguments: [ "@doctrine" ]
+
+    traders_deals.set:
+      class: System\Service\TradersDeals\Set
       arguments: [ "@doctrine" ]
 

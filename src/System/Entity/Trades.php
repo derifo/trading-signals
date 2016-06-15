@@ -121,7 +121,15 @@ class Trades
      */
     private $merchantSignal;
 
-
+    /**
+     * @var TradersDeals
+     *
+     * @ORM\ManyToOne(targetEntity="TradersDeals")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="trader_deal_id", referencedColumnName="id")
+     * })
+     */
+    private $traderDeal;
 
     /**
      * Get id
@@ -443,5 +451,29 @@ class Trades
     public function getMerchantSignal()
     {
         return $this->merchantSignal;
+    }
+
+    /**
+     * Set traderDeal
+     *
+     * @param \System\Entity\TradersDeals $traderDeal
+     *
+     * @return Trades
+     */
+    public function setTraderDeal(\System\Entity\TradersDeals $traderDeal = null)
+    {
+        $this->traderDeal = $traderDeal;
+
+        return $this;
+    }
+
+    /**
+     * Get traderDeal
+     *
+     * @return \System\Entity\TradersDeals
+     */
+    public function getTraderDeal()
+    {
+        return $this->traderDeal;
     }
 }

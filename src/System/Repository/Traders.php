@@ -1,6 +1,7 @@
 <?php
 namespace System\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use System\Helpers\Arr;
 
@@ -32,4 +33,66 @@ class Traders extends CrudRepository {
         return Arr::get($qb->getQuery()->getArrayResult(), 0);
     }
 
+    /**
+     * @param $merchant
+     * @param array $filters
+     * @param array $settings
+     * @return ArrayCollection
+     */
+    public function getTradersByMerchant($merchant, array $filters = [], array $settings = [])
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        $qb->innerJoin('System:MerchantsTraders', 'mt', 'WITH', 'mt.id = entity.merchantTrader')
+            ->andWhere('mt.merchant = :merchant')
+            ->setParameter('merchant', is_numeric($merchant) ? $merchant : $merchant->getId());
+
+
+        $this->addFilters($qb, $filters);
+        $this->addFilters($qb, $settings);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param $merchant
+     * @param array $filters
+     * @param array $settings
+     * @return ArrayCollection
+     */
+    public function getTradersBreakdown($merchant, array $filters = [], array $settings = [])
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        $qb->select([
+            'entity.id',
+            'merchant_traders.originId as origin_id',
+            'merchant_traders.name',
+            'countries.title as country',
+            'COUNT(DISTINCT trades.id) as total_trades',
+            'SUM(DISTINCT trades.amount) as trades_amount',
+            'deals.title as current_deal',
+            'entity.created',
+            'merchant_traders.balance',
+            'traders_deals.dealExpires as deal_expires',
+            'traders_deals.dealStarted as deal_started',
+        ]);
+
+        $qb->innerJoin('System:MerchantsTraders', 'merchant_traders', 'WITH', 'merchant_traders.id = entity.merchantTrader');
+        $qb->leftJoin('System:Trades', 'trades', 'WITH', 'trades.trader = entity.id');
+        $qb->innerJoin('System:TradersDeals', 'traders_deals', 'WITH', 'entity.id = traders_deals.trader');
+        $qb->innerJoin('System:Deals', 'deals', 'WITH', 'traders_deals.deal = deals.id');
+        $qb->innerJoin('System:Countries', 'countries', 'WITH', 'merchant_traders.country = countries.id');
+
+        $qb->addGroupBy('entity.id');
+        $qb->addGroupBy('trades.trader');
+
+        $qb->andWhere('traders_deals.traderDealStatus = 1');
+
+        $qb->andWhere('merchant_traders.merchant = :merchant')
+            ->setParameter('merchant', is_numeric($merchant) ? $merchant : $merchant->getId());
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }
+

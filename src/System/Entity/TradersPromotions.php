@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TradersPromotions
  *
- * @ORM\Table(name="traders_promotions", indexes={@ORM\Index(name="trader_id", columns={"synced_trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
+ * @ORM\Table(name="traders_promotions", indexes={@ORM\Index(name="trader_id", columns={"merchant_trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
  * @ORM\Entity
  */
 class TradersPromotions
@@ -53,14 +53,14 @@ class TradersPromotions
     private $deal;
 
     /**
-     * @var \SyncedTraders
+     * @var \MerchantsTraders
      *
-     * @ORM\ManyToOne(targetEntity="SyncedTraders")
+     * @ORM\ManyToOne(targetEntity="MerchantsTraders")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="synced_trader_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="merchant_trader_id", referencedColumnName="id")
      * })
      */
-    private $syncedTrader;
+    private $merchantTrader;
 
 
 
@@ -171,26 +171,26 @@ class TradersPromotions
     }
 
     /**
-     * Set syncedTrader
+     * Set merchantTrader
      *
-     * @param \System\Entity\SyncedTraders $syncedTrader
+     * @param \System\Entity\MerchantsTraders $merchantTrader
      *
      * @return TradersPromotions
      */
-    public function setSyncedTrader(\System\Entity\SyncedTraders $syncedTrader = null)
+    public function setMerchantTrader(\System\Entity\MerchantsTraders $merchantTrader = null)
     {
-        $this->syncedTrader = $syncedTrader;
+        $this->merchantTrader = $merchantTrader;
 
         return $this;
     }
 
     /**
-     * Get syncedTrader
+     * Get merchantTrader
      *
-     * @return \System\Entity\SyncedTraders
+     * @return \System\Entity\MerchantsTraders
      */
-    public function getSyncedTrader()
+    public function getMerchantTrader()
     {
-        return $this->syncedTrader;
+        return $this->merchantTrader;
     }
 }

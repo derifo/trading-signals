@@ -6,10 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Serializable;
 
+
 /**
  * Traders
  *
- * @ORM\Table(name="traders", indexes={@ORM\Index(name="country_id", columns={"country_id"})})
+ * @ORM\Table(name="traders", indexes={@ORM\Index(name="active_deal_id", columns={"active_deal_id"})})
  * @ORM\Entity(repositoryClass="System\Repository\Traders")
  */
 class Traders implements UserInterface, Serializable
@@ -26,13 +27,6 @@ class Traders implements UserInterface, Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="origin_id", type="string", length=150, nullable=false)
-     */
-    private $originId;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="email", type="string", length=80, nullable=false)
      */
     private $email;
@@ -40,23 +34,9 @@ class Traders implements UserInterface, Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=100, nullable=false)
+     * @ORM\Column(name="password", type="string", length=120, nullable=false)
      */
     private $password;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="balance", type="integer", nullable=false)
-     */
-    private $balance = '0';
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="active", type="boolean", nullable=false)
-     */
-    private $active = '1';
 
     /**
      * @var \DateTime
@@ -66,24 +46,14 @@ class Traders implements UserInterface, Serializable
     private $created = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var \Countries
+     * @var MerchantsTraders
      *
-     * @ORM\ManyToOne(targetEntity="Countries")
+     * @ORM\ManyToOne(targetEntity="MerchantsTraders")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="merchant_trader_id", referencedColumnName="id")
      * })
      */
-    private $country;
-
-    /**
-     * @var \Merchants
-     *
-     * @ORM\ManyToOne(targetEntity="Merchants")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="merchant_id", referencedColumnName="id")
-     * })
-     */
-    private $merchant;
+    private $merchantTrader;
 
     /**
      * Get id
@@ -93,30 +63,6 @@ class Traders implements UserInterface, Serializable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set originId
-     *
-     * @param string $originId
-     *
-     * @return Traders
-     */
-    public function setOriginId($originId)
-    {
-        $this->originId = $originId;
-
-        return $this;
-    }
-
-    /**
-     * Get originId
-     *
-     * @return string
-     */
-    public function getOriginId()
-    {
-        return $this->originId;
     }
 
     /**
@@ -168,54 +114,6 @@ class Traders implements UserInterface, Serializable
     }
 
     /**
-     * Set balance
-     *
-     * @param integer $balance
-     *
-     * @return Traders
-     */
-    public function setBalance($balance)
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
-    /**
-     * Get balance
-     *
-     * @return integer
-     */
-    public function getBalance()
-    {
-        return $this->balance;
-    }
-
-    /**
-     * Set active
-     *
-     * @param boolean $active
-     *
-     * @return Traders
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return boolean
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
      * Set created
      *
      * @param \DateTime $created
@@ -240,51 +138,27 @@ class Traders implements UserInterface, Serializable
     }
 
     /**
-     * Set country
+     * Set merchantTrader
      *
-     * @param \System\Entity\Countries $country
+     * @param \System\Entity\MerchantsTraders $merchantTrader
      *
      * @return Traders
      */
-    public function setCountry(\System\Entity\Countries $country = null)
+    public function setMerchantTrader(\System\Entity\MerchantsTraders $merchantTrader = null)
     {
-        $this->country = $country;
+        $this->merchantTrader = $merchantTrader;
 
         return $this;
     }
 
     /**
-     * Get country
+     * Get merchantTrader
      *
-     * @return \System\Entity\Countries
+     * @return \System\Entity\MerchantsTraders
      */
-    public function getCountry()
+    public function getMerchantTrader()
     {
-        return $this->country;
-    }
-
-    /**
-     * Set merchant
-     *
-     * @param \System\Entity\Merchants $merchant
-     *
-     * @return Traders
-     */
-    public function setMerchant(\System\Entity\Merchants $merchant = null)
-    {
-        $this->merchant = $merchant;
-
-        return $this;
-    }
-
-    /**
-     * Get merchant
-     *
-     * @return \System\Entity\Merchants
-     */
-    public function getMerchant()
-    {
-        return $this->merchant;
+        return $this->merchantTrader;
     }
 
     /**

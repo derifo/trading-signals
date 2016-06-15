@@ -9,6 +9,7 @@
 namespace System\Service\Signals;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 use System\Entity\Merchants;
 use System\Entity\MerchantsSignals;
 use System\Entity\Signals;
@@ -53,10 +54,17 @@ class Buy {
             ->getRepository('System:Traders')
             ->find($trader_id);
 
+        $deal = $this->doctrine
+            ->getRepository('System:TradersDeals')
+            ->findOneBy([ 'trader' => $trader->getId(), 'traderDealStatus' => 1 ]);
+
+        if ( ! $deal)
+            throw new PreconditionFailedHttpException('No Active Deal Found');
+
         /**
          * @var $merchant Merchants
          */
-        $merchant = $trader->getMerchant();
+        $merchant = $trader->getMerchantTrader()->getMerchant();
 
         /**
          * @var $signal Signals
@@ -73,7 +81,7 @@ class Buy {
             ->findOneBy([ 'merchant' => $merchant, 'signal' => $signal ]);
 
         $data = [
-            'trader_id' => $trader->getOriginId(),
+            'trader_id' => $trader->getMerchantTrader()->getOriginId(),
             'option_id' => $merchant_signal->getMerchantOptionId(),
             'direction' => $signal->getDirection(),
             'amount' => Arr::get($options, 'amount', $merchant->getMinTradeAmount())
@@ -82,7 +90,7 @@ class Buy {
         $results = $this->adapters
             ->getAdapter($merchant)
             ->addTrade($data);
-        
+
         if (Arr::get($results, 'status'))
         {
             $open_trade_status = $this->doctrine->getRepository('System:TradesStatuses')
@@ -91,6 +99,7 @@ class Buy {
             $trade = new Trades();
             $trade->setCreated(new \DateTime())
                 ->setMerchantSignal($merchant_signal)
+                ->setTraderDeal($deal)
                 ->setTrader($trader)
                 ->setTradeStatus($open_trade_status)
                 ->setMerchantTradeId(Arr::get($results, 'trade_id'))

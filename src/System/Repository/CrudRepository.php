@@ -2,6 +2,7 @@
 namespace System\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use System\Helpers\Arr;
 
 class CrudRepository extends EntityRepository {
@@ -14,6 +15,14 @@ class CrudRepository extends EntityRepository {
     {
         $qb = $this->createQueryBuilder('entity');
 
+        $this->addFilters($qb, $filters);
+        $this->addSettings($qb, $settings);
+
+        return $qb->getQuery()->execute();
+    }
+
+    protected function addFilters(QueryBuilder &$qb, array $filters = [])
+    {
         foreach($filters as $field => $value)
         {
             if (is_array($value))
@@ -27,7 +36,10 @@ class CrudRepository extends EntityRepository {
                     ->setParameter($field, $value);
             }
         }
-
+    }
+    
+    protected function addSettings(QueryBuilder &$qb, array $settings = [])
+    {
         if (Arr::get($settings, 'limit'))
         {
             $qb->setMaxResults(Arr::get($settings, 'limit'));
@@ -38,6 +50,21 @@ class CrudRepository extends EntityRepository {
             $qb->setFirstResult(Arr::get($settings, 'offset'));
         }
 
-        return $qb->getQuery()->execute();
+        if (Arr::get($settings, 'order') && is_array(Arr::get($settings, 'order')))
+        {
+            $order = Arr::get($settings, 'order');
+
+            if ($this->eligibleField(Arr::get($order, 0)))
+            {
+                $qb->addOrderBy('entity.'.Arr::get($order, 0), Arr::get($order, 1, 'ASC'));
+            }
+        }
+    }
+
+    private function eligibleField($field)
+    {
+        $fields = $this->getClassMetadata()->fieldMappings;
+
+        return Arr::get($fields, $field);
     }
 }

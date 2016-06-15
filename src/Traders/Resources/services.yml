@@ -15,3 +15,7 @@ services:
     traders.statistics:
         class: Traders\Service\Traders\Statistics
         arguments: [ "@doctrine" ]
+
+    traders.register:
+        class: System\Service\Traders\Register
+        arguments: [ "@doctrine", "@security.password_encoder", "@traders_deals.set", "@security.traders.login" ]

@@ -22,6 +22,7 @@ security:
               target: /partners
     access_control:
         - { path: ^/api/traders/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/traders/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/_wdt/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/_profiler/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/traders/*, roles: ROLE_TRADER  }

@@ -37,6 +37,15 @@ class PartnersController extends Controller
     }
 
     /**
+     * @Get("/session")
+     * @View()
+     */
+    public function getPartnerSessionAction()
+    {
+        return $this->get('security.token_storage')->getToken()->getUser();
+    }
+
+    /**
      * @Get("/partners/stats")
      * @View()
      */

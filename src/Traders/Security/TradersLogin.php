@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use System\Entity\Traders;
 use System\Helpers\Arr;
 
 /**
@@ -37,6 +38,7 @@ class TradersLogin {
 
     public function __construct(Registry $doctrine, TokenStorage $token_storage, $encoder)
     {
+        $this->encoder = $encoder;
         $this->doctrine = $doctrine;
         $this->token_storage = $token_storage;
      }
@@ -54,20 +56,23 @@ class TradersLogin {
          * @var $repo EntityRepository
          */
         $repo = $this->doctrine->getRepository('System:Traders');
-        $user = $repo->findOneBy([ 'email' => Arr::get($this->data, 'email') ]);
 
-        if ( ! $user) throw new PreconditionFailedHttpException();
+        /**
+         * @var $trader Traders
+         */
+        $trader = $repo->findOneBy([ 'email' => Arr::get($this->data, 'email') ]);
 
-        $encoded_password = $this->encoder->encodePassword($user, Arr::get($this->data, 'password'));
+        if ( ! $trader) throw new PreconditionFailedHttpException();
 
-        if($user->getPassword() == $encoded_password)
+        $encoded_password = $this->encoder->encodePassword($trader, Arr::get($this->data, 'password'));
+
+        if($trader->getPassword() == $encoded_password)
         {
-            $token = new UsernamePasswordToken($user, null, 'users', $user->getRoles());
-            $this->token_storage->setToken($token);
+            $this->setTraderToken($trader);
 
             return [
                 'status' => 'success',
-                'user' => $user
+                'user' => $trader
             ];
         }
         else
@@ -75,5 +80,11 @@ class TradersLogin {
             // TODO.Lock User After 5 Attempts for 15 minutes
             throw new PreconditionFailedHttpException('Invalid Credentials');
         }
+    }
+
+    public function setTraderToken(Traders $trader)
+    {
+        $token = new UsernamePasswordToken($trader, null, 'users', $trader->getRoles());
+        $this->token_storage->setToken($token);
     }
 }

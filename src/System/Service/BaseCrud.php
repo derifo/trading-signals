@@ -24,7 +24,7 @@ class BaseCrud {
         $this->doctrine = $doctrine;
     }
     
-    public function findAll($filters, $settings)
+    public function findAll($filters = [], $settings = [])
     {
         return $this->doctrine->getRepository(static::ENTITY)
             ->crudFindAll($filters, $settings);

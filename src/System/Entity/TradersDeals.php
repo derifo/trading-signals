@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TradersDeals
  *
  * @ORM\Table(name="traders_deals", indexes={@ORM\Index(name="trader_id", columns={"trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\TradersDeals")
  */
 class TradersDeals
 {
@@ -36,13 +36,6 @@ class TradersDeals
     private $dealExpires;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="active", type="integer", nullable=false)
-     */
-    private $active = '1';
-
-    /**
      * @var \Traders
      *
      * @ORM\ManyToOne(targetEntity="Traders")
@@ -51,6 +44,16 @@ class TradersDeals
      * })
      */
     private $trader;
+
+    /**
+     * @var \Traders
+     *
+     * @ORM\ManyToOne(targetEntity="TradersDealsStatuses")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="trader_deal_status_id", referencedColumnName="id")
+     * })
+     */
+    private $traderDealStatus;
 
     /**
      * @var \Deals
@@ -123,30 +126,6 @@ class TradersDeals
     }
 
     /**
-     * Set active
-     *
-     * @param integer $active
-     *
-     * @return TradersDeals
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return integer
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
      * Set trader
      *
      * @param \System\Entity\Traders $trader
@@ -192,5 +171,29 @@ class TradersDeals
     public function getDeal()
     {
         return $this->deal;
+    }
+
+    /**
+     * Set trader deal status
+     *
+     * @param \System\Entity\Traders $trader
+     *
+     * @return TradersDeals
+     */
+    public function setTraderDealStatus(\System\Entity\TradersDealsStatuses $traderDealStatus = null)
+    {
+        $this->traderDealStatus = $traderDealStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get trader
+     *
+     * @return \System\Entity\Traders
+     */
+    public function getTraderDealStatus()
+    {
+        return $this->traderDealStatus;
     }
 }

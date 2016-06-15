@@ -14,4 +14,5 @@ use System\Service\BaseCrud;
 class Crud extends BaseCrud {
 
     const ENTITY = 'System:MerchantsSignals';
+
 }

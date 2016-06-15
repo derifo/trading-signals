@@ -20,5 +20,20 @@ use System\Service\Integration\AdaptersContainer;
 class TradersController extends Controller
 {
 
- 
+    /**
+     * @Get("/traders")
+     * @View()
+     */
+    public function findAllTradersAction(Request $request)
+    {
+        $filters = Arr::extract($request->query->all(), [  ]);
+
+        /**
+         * @var $partner Partners
+         */
+        $partner = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->get('traders.crud')
+            ->getTradersBreakdown($partner->getMerchants()->get(0), $filters);
+    }
 }

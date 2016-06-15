@@ -19,14 +19,14 @@ class MerchantsSignalsController extends Controller
      */
     public function findAllMerchantsSignalsAction(Request $request)
     {
-        $filters = Arr::extract($request->query->all(), [ 'active' ]);
+        $filters = Arr::extract($request->query->all(), [ 'active' ], [ 1 ]);
         $settings = Arr::extract($request->query->all(), [ 'limit', 'offset' ]);
 
         /**
          * @var $trader Traders
          */
         $trader = $this->get('security.token_storage')->getToken()->getUser();
-        $filters['merchant'] = $trader->getMerchant()->getId();
+        $filters['merchant'] = $trader->getMerchantTrader()->getMerchant();
 
         return $this->get('merchants_signals.crud')
             ->findAll($filters, $settings);

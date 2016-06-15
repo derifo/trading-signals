@@ -38,7 +38,7 @@ class TradersController extends Controller
 
 
     /**
-     * @Get("/register")
+     * @Post("/register")
      * @View()
      */
     public function registerTraderAction(Request $request)

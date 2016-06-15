@@ -10,7 +10,7 @@ namespace System\Service\TradersPromotions;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use System\Entity\Deals;
-use System\Entity\SyncedTraders;
+use System\Entity\MerchantsTraders;
 use System\Entity\TradersPromotions;
 
 class Generate {
@@ -27,11 +27,12 @@ class Generate {
 
     public function generateCode($synced_trader_id, $deal_id)
     {
+
         /**
-         * @var $trader SyncedTraders
+         * @var $trader MerchantsTraders
          */
         $trader = $this->doctrine
-            ->getRepository('System:SyncedTraders')
+            ->getRepository('System:MerchantsTraders')
             ->find($synced_trader_id);
 
         if ( ! $trader) return 'MISSING OR INVALID TRADER';
@@ -55,7 +56,7 @@ class Generate {
 
             $traderPromotion
                 ->setDeal($deal)
-                ->setSyncedTrader($trader)
+                ->setMerchantTrader($trader)
                 ->setPromotionCode($code)
                 ->setUsed(0)
                 ->setCreated(new \DateTime());

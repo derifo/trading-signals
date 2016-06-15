@@ -14,6 +14,8 @@ use System\Entity\Traders;
 use System\Entity\TradersPromotions;
 use System\Helpers\Arr;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use System\Service\TradersDeals\Set;
+use Traders\Security\TradersLogin;
 
 class Register {
 
@@ -29,15 +31,29 @@ class Register {
 
     private $encoder;
 
-    public function __construct(Registry $doctrine, $encoder)
+    /**
+     * @var $traders_deals Set
+     */
+    private $traders_deals;
+
+    /**
+     * @var $traders_deals TradersLogin
+     */
+    private $traders_login;
+
+    public function __construct(Registry $doctrine, $encoder, Set $traders_deals, TradersLogin $traders_login)
     {
         $this->doctrine = $doctrine;
         $this->encoder = $encoder;
+        $this->traders_deals = $traders_deals;
+        $this->traders_login = $traders_login;
     }
 
     public function setData(array $data)
     {
         $this->data = $data;
+
+        return $this;
     }
 
     public function register()
@@ -47,16 +63,13 @@ class Register {
          */
         $promotion = $this->doctrine
             ->getRepository('System:TradersPromotions')
-            ->findOneBy([ 'used' => 0, 'code' => Arr::get($this->data, 'code') ]);
+            ->findOneBy([ 'used' => 0, 'promotionCode' => Arr::get($this->data, 'code') ]);
 
         if ( ! $promotion) throw new PreconditionFailedHttpException('Invalid Promotion Code');
 
-        $synced_trader = $promotion->getSyncedTrader();
+        $merchant_trader = $promotion->getMerchantTrader();
         $trader = $this->doctrine->getRepository('System:Traders')
-            ->findOneBy([
-                'originId' => $synced_trader->getOriginId(),
-                'merchant' => $synced_trader->getMerchant()
-            ]);
+            ->findOneBy([ 'merchantTrader' => $merchant_trader ]);
 
         if ($trader) throw new PreconditionFailedHttpException('Duplicate Registration');
 
@@ -65,18 +78,24 @@ class Register {
         $encoded_password = $this->encoder->encodePassword($trader, Arr::get($this->data, 'password'));
 
         $trader
-            ->setBalance($synced_trader->getBalance())
-            ->setActive(1)
-            ->setCountry(NULL)
-            ->setMerchant($synced_trader->getMerchant())
+            ->setMerchantTrader($merchant_trader)
             ->setEmail(Arr::get($this->data, 'email'))
             ->setPassword($encoded_password)
             ->setCreated(new \DateTime());
 
+        $promotion->setUsed(1);
+
         $em = $this->doctrine->getManager();
 
+        $merchant_trader->setPromoted(1);
+
         $em->persist($trader);
+        $em->persist($merchant_trader);
+        $em->persist($promotion);
         $em->flush();
+
+        $this->traders_deals->addDealToTrader($trader, $promotion->getDeal());
+        $this->traders_login->setTraderToken($trader);
 
         return [
             'status' => 1,

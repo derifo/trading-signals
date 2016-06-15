@@ -73,8 +73,9 @@ class SpotOptionAdapter extends AdapterBase {
             $trader = [
                 'id' => Arr::get($trader, 'id'),
                 'first_name' => Arr::get($trader, 'FirstName'),
-                'last_name' => Arr::get($trader, 'LastName'),
-                'registration_date' => new \DateTime(Arr::get($trader, 'regTime')),
+                'country' => Arr::get($trader, 'Country'),
+                'last_name' => Arr::get($trader, 'LastName', ''),
+                'registration_date' => new \DateTime(Arr::get($trader, 'regTime', 'now')),
                 'ftd_date' => Arr::get($trader, 'firstDepositDate') == '0000-00-00 00:00:00' ? NULL
                     : new \DateTime(Arr::get($trader, 'firstDepositDate')),
                 'email' => Arr::get($trader, 'email'),

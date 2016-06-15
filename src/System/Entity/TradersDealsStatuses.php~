@@ -1,0 +1,33 @@
+<?php
+
+namespace System\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TradersDeals
+ *
+ * @ORM\Table(name="traders_deals", indexes={@ORM\Index(name="trader_id", columns={"trader_id"}), @ORM\Index(name="deal_id", columns={"deal_id"})})
+ * @ORM\Entity()
+ */
+class TradersDealsStatuses
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=120, nullable=false)
+     */
+    private $title;
+
+}
+
+

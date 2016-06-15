@@ -38,7 +38,7 @@ class Statistics {
             ->getTradesStatistics($trader->getId()) ?: [];
 
         return array_merge([
-            'balance' => $trader->getBalance(),
+            'balance' => $trader->getMerchantTrader()->getBalance(),
             'investment' => 0,
             'potential_profit' => 0,
             'wins'  => 0,

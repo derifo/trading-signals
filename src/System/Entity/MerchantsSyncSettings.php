@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * MerchantsSyncSettings
  *
  * @ORM\Table(name="merchants_sync_settings", indexes={@ORM\Index(name="merchant_id", columns={"merchant_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="System\Repository\MerchantsSyncSettings")
  */
 class MerchantsSyncSettings
 {

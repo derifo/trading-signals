@@ -41,17 +41,34 @@ class Crud extends BaseCrud {
         $this->adapters = $adapters;
     }
 
+    public function getTradersByMerchant($merchant, array $filters = [], array $settings = [])
+    {
+        return $this->doctrine
+            ->getRepository(self::ENTITY)
+            ->getTradersByMerchant($merchant, $filters, $settings);
+    }
+
+
+    public function getTradersBreakdown($merchant, array $filters = [], array $settings = [])
+    {
+        return $this->doctrine
+            ->getRepository(self::ENTITY)
+            ->getTradersBreakdown($merchant, $filters, $settings);
+    }
+
     public function updateBalance(Traders $trader)
     {
+        $merchant_trader = $trader->getMerchantTrader();
+
         $em = $this->doctrine->getManager();
 
         $results = $this->adapters
-            ->getAdapter($trader->getMerchant())
-            ->getTrader($trader->getOriginId());
+            ->getAdapter($merchant_trader->getMerchant())
+            ->getTrader($merchant_trader->getOriginId());
 
-        $trader->setBalance(Arr::get($results, 'balance', $trader->getBalance()));
+        $merchant_trader->setBalance(Arr::get($results, 'balance', $merchant_trader->getBalance()));
 
-        $em->persist($trader);
+        $em->persist($merchant_trader);
         $em->flush();
     }
 }
