@@ -25,43 +25,61 @@ class Generate {
         $this->doctrine = $doctrine;
     }
 
-    public function generateCode($synced_trader_id, $deal_id)
+    public function generateCode($trader, $deal, $verify = TRUE, $flush = TRUE)
     {
-        /**
-         * @var $trader MerchantsTraders
-         */
-        $trader = $this->doctrine
-            ->getRepository('System:MerchantsTraders')
-            ->find($synced_trader_id);
+        if (is_numeric($trader))
+        {
+            /**
+             * @var $trader MerchantsTraders
+             */
+            $trader = $this->doctrine
+                ->getRepository('System:MerchantsTraders')
+                ->find($trader);
 
-        if ( ! $trader) return 'MISSING OR INVALID TRADER';
-        /**
-         * @var $deal Deals
-         */
-        $deal = $this->doctrine
-            ->getRepository('System:Deals')
-            ->find($deal_id);
+            if ( ! $trader) return NULL;
+        }
+
+
+        if (is_numeric($deal))
+        {
+            /**
+             * @var $deal Deals
+             */
+            $deal = $this->doctrine
+                ->getRepository('System:Deals')
+                ->find($deal);
+
+            if ( ! $deal) return NULL;
+        }
+
 
         $code = $trader->getOriginId().$trader->getMerchant()->getTag().$deal->getId();
+
         $code = md5($code);
 
-        $traderPromotion = $this->doctrine
-            ->getRepository('System:TradersPromotions')
-            ->findOneBy([ 'promotionCode' => $code, 'used' => 0 ]);
-
-        if ( ! $traderPromotion)
+        if ($verify)
         {
-            $traderPromotion = new TradersPromotions();
+            $traderPromotion = $this->doctrine
+                ->getRepository('System:TradersPromotions')
+                ->findOneBy([ 'promotionCode' => $code, 'used' => 0 ]);
 
-            $traderPromotion
-                ->setDeal($deal)
-                ->setMerchantTrader($trader)
-                ->setPromotionCode($code)
-                ->setUsed(0)
-                ->setCreated(new \DateTime());
+            if ($traderPromotion) return $traderPromotion->getPromotionCode();
+        }
 
-            $em = $this->doctrine->getManager();
-            $em->persist($traderPromotion);
+        $traderPromotion = new TradersPromotions();
+
+        $traderPromotion
+            ->setDeal($deal)
+            ->setMerchantTrader($trader)
+            ->setPromotionCode($code)
+            ->setUsed(0)
+            ->setCreated(new \DateTime());
+
+        $em = $this->doctrine->getManager();
+        $em->persist($traderPromotion);
+
+        if ($flush)
+        {
             $em->flush();
         }
 
@@ -70,22 +88,14 @@ class Generate {
 
     public function generateCodes($synced_trader_ids, $deal_id, $merchant_id = NULL)
     {
-
         if ( ! $synced_trader_ids && $merchant_id)
         {
-            $synced_trader_ids = [];
-            $merchants_traders = $this->doctrine
+            $synced_trader_ids = $this->doctrine
                 ->getRepository('System:MerchantsTraders')
                 ->findBy([ 'merchant' => $merchant_id ]);
-
-            /**
-             * @var $merchant_trader MerchantsTraders
-             */
-            foreach($merchants_traders as $merchant_trader)
-            {
-                $synced_trader_ids[] = $merchant_trader->getId();
-            }
         }
+
+        $deal_id = $this->doctrine->getRepository('System:Deals')->find($deal_id);
 
         $synced_trader_ids = $this->sanitizeTradersByDeal($synced_trader_ids);
 
@@ -93,10 +103,12 @@ class Generate {
         foreach($synced_trader_ids as $synced_trader_id)
         {
             $codes[] = [
-                'synced_trader_id' => $synced_trader_id,
-                'code' => $this->generateCode($synced_trader_id, $deal_id)
+                'synced_trader_id' => is_numeric($synced_trader_id) ? $synced_trader_id : $synced_trader_id->getId(),
+                'code' => $this->generateCode($synced_trader_id, $deal_id, FALSE, FALSE)
             ];
         }
+
+        $this->doctrine->getManager()->flush();
 
         return $codes;
     }
