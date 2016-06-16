@@ -57,7 +57,7 @@ class Archive {
             if($trade->getExpiryDate()->getTimestamp() < time())
             {
                 $merchant_trade = $this->adapters
-                    ->getAdapter($trade->getTrader()->getMerchant())
+                    ->getAdapter($trade->getTrader()->getMerchantTrader()->getMerchant())
                     ->getTrade($trade->getMerchantTradeId());
 
                 if (Arr::get($merchant_trade, 'trade_status') == 'won')

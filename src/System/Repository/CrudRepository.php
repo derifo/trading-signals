@@ -27,7 +27,7 @@ class CrudRepository extends EntityRepository {
         {
             if (is_array($value))
             {
-                $qb->andWhere('entity.'.$field.' IN :'.$field)
+                $qb->andWhere('entity.'.$field.' IN (:'.$field.')')
                     ->setParameter($field, $value);
             }
             else

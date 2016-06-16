@@ -46,7 +46,7 @@ class Archive {
         foreach($signals as $signal)
         {
             $max_timestamp = $signal->getMaxExpires()->getTimestamp() + ($signal->getExpiresFlexAfter() * Date::MINUTE);
-            if ($max_timestamp > time())
+            if ($max_timestamp < time())
             {
                 $signal->setActive(0);
                 $em->persist($signal);
