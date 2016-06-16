@@ -27,7 +27,6 @@ class Generate {
 
     public function generateCode($synced_trader_id, $deal_id)
     {
-
         /**
          * @var $trader MerchantsTraders
          */
@@ -69,8 +68,25 @@ class Generate {
         return $code;
     }
 
-    public function generateCodes(array $synced_trader_ids, $deal_id)
+    public function generateCodes($synced_trader_ids, $deal_id, $merchant_id = NULL)
     {
+
+        if ( ! $synced_trader_ids && $merchant_id)
+        {
+            $synced_trader_ids = [];
+            $merchants_traders = $this->doctrine
+                ->getRepository('System:MerchantsTraders')
+                ->findBy([ 'merchant' => $merchant_id ]);
+
+            /**
+             * @var $merchant_trader MerchantsTraders
+             */
+            foreach($merchants_traders as $merchant_trader)
+            {
+                $synced_trader_ids[] = $merchant_trader->getId();
+            }
+        }
+
         $synced_trader_ids = $this->sanitizeTradersByDeal($synced_trader_ids);
 
         $codes = [];

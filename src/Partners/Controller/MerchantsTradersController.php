@@ -42,10 +42,11 @@ class MerchantsTradersController extends Controller
     {
         $codes = $request->request->get('merchants_traders');
         $deal = $request->request->get('deal');
+        $merchant = $request->request->get('merchant');
 
-        if ( ! is_array($codes)) throw new PreconditionFailedHttpException('Invalid or missing traders');
+        if ( ! is_array($codes) && $codes != 0) throw new PreconditionFailedHttpException('Invalid or missing traders');
 
         return $this->get('traders_promotions.generate')
-            ->generateCodes($codes, $deal);
+            ->generateCodes($codes, $deal, $merchant);
     }
 }
